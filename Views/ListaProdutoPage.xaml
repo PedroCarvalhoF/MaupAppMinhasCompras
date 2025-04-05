@@ -1,12 +1,102 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MinhasCompras.Views.ListaProdutoPage"
-             Title="ListaProdutoPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Lista de Produtos">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Somar"
+                     x:Name="mnSomar"
+                     Clicked="mnSomar_Clicked" />
+        <ToolbarItem Text="Novo Produto"
+                     Clicked="ToolbarItem_Clicked" />
+    </ContentPage.ToolbarItems>
+
+    <Grid Padding="10"
+          RowSpacing="10"
+          RowDefinitions="Auto,*">
+
+        <!-- Linha 0: SearchBar -->
+        <SearchBar x:Name="txtConsultaProduto"
+                   Placeholder="Informe nome do Produto"
+                   TextChanged="txtConsultaProduto_TextChanged"
+                   Grid.Row="0" />
+
+        <!-- Linha 1: ListView preenchendo o restante da tela -->
+        <ListView x:Name="ListViewProdutos" ItemSelected="ListViewProdutos_ItemSelected"
+                  Grid.Row="1"
+                  HasUnevenRows="True"
+                  SeparatorVisibility="None">
+
+            <ListView.Header>
+                <Frame Margin="0,5"
+                       Padding="10"
+                       BackgroundColor="#f9f9f9"
+                       CornerRadius="6"
+                       HasShadow="True">
+                    <Grid ColumnDefinitions="*,2*,*,*,*,*"
+                          Padding="5">
+                        <Label Grid.Column="0"
+                               Text="ID"
+                               HorizontalTextAlignment="Start" />
+                        <Label Grid.Column="1"
+                               Text="Descrição"
+                               HorizontalTextAlignment="Start" />
+                        <Label Grid.Column="2"
+                               Text="QTD"
+                               HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="3"
+                               Text="Preco"
+                               HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="4"
+                               Text="Total"
+                               HorizontalTextAlignment="Center" />
+                    </Grid>
+                </Frame>
+            </ListView.Header>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.ContextActions>
+                            <MenuItem Text="Remover"
+                                      x:Name="mnRemoverItem"
+                                      Clicked="mnRemoverItem_Clicked" />
+                        </ViewCell.ContextActions>
+
+                        <Frame Margin="0,5"
+                               Padding="10"
+                               BackgroundColor="#f9f9f9"
+                               CornerRadius="6"
+                               HasShadow="True">
+                            <Grid ColumnDefinitions="*,2*,*,*,*,*,*">
+                                <Label Grid.Column="0"
+                                       Text="{Binding Id}"
+                                       HorizontalTextAlignment="Start"
+                                       VerticalTextAlignment="Center" />
+                                <Label Grid.Column="1"
+                                       Text="{Binding Descricao}"
+                                       HorizontalTextAlignment="Start"
+                                       VerticalTextAlignment="Center" />
+                                <Label Grid.Column="2"
+                                       Text="{Binding Quantidade}"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Center" />
+                                <Label Grid.Column="3"
+                                       Text="{Binding Preco}"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Center" />
+                                <Label Grid.Column="4"
+                                       Text="{Binding Total}"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Center" />
+                            </Grid>
+                        </Frame>
+
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+
+    </Grid>
 </ContentPage>
