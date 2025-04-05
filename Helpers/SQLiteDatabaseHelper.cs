@@ -41,7 +41,8 @@ public class SQLiteDatabaseHelper
 
     public Task<List<ProdutoDto>> Search(string search)
     {
-       var sql = "SELECT * FROM ProdutoDto WHERE Descricao LIKE ?";
+        var sql = "SELECT * FROM ProdutoDto WHERE Descricao LIKE ?";
         return _conn.QueryAsync<ProdutoDto>(sql, "%" + search + "%");
+    }
 
 }
