@@ -16,22 +16,36 @@ public partial class ListaProdutoPage : ContentPage
 
     protected override async void OnAppearing()
     {
+       //await App.Db.DeleteFrom();
+        await ConsultarProdutos();
+    }
+
+    private async Task ConsultarProdutos()
+    {
         try
         {
             var produtos = await App.Db.GetAll();
 
-            lista_produtosObservable.Clear();
+            await MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                if (this.Handler == null)
+                    return;
 
-            produtos.ForEach(prod => lista_produtosObservable.Add(prod));
+                lista_produtosObservable.Clear();
+                foreach (var prod in produtos)
+                    lista_produtosObservable.Add(prod);
+            });
         }
         catch (Exception ex)
         {
-
-            DisplayAlert("Erro", ex.Message, "Ok");
+            await DisplayAlert("Erro", ex.Message, "Ok");
         }
-
-
+        finally
+        {
+           
+        }
     }
+
     private void ToolbarItem_Clicked(object sender, EventArgs e)
     {
         try
@@ -128,4 +142,43 @@ public partial class ListaProdutoPage : ContentPage
             await DisplayAlert("Erro", ex.Message, "Ok");
         }
     }
+
+    private async void ListViewProdutos_Refreshing(object sender, EventArgs e)
+    {
+        try
+        {
+            await ConsultarProdutos();
+        }
+        catch (Exception ex)
+        {
+
+            await DisplayAlert("Erro", ex.Message, "Ok");
+        }
+        finally
+        {
+            
+        }
+    }
+
+    private async void ListViewProdutos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        try
+        {
+            var produtoSelecionado = e.CurrentSelection.FirstOrDefault() as ProdutoDto;
+            if (produtoSelecionado == null)
+                return;
+
+            await Navigation.PushAsync(new EditarProdutoPage
+            {
+                BindingContext = produtoSelecionado
+            });
+
+            ((CollectionView)sender).SelectedItem = null;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erro", ex.Message, "Ok");
+        }
+    }
+
 }

@@ -21,6 +21,7 @@ public partial class NovoProdutoPage : ContentPage
             };
 
             await App.Db.Insert(produtoDto);
+
             await DisplayAlert("Sucesso", "Produto cadastrado com sucesso!", "Ok");
             await Navigation.PopAsync();
         }
@@ -34,7 +35,7 @@ public partial class NovoProdutoPage : ContentPage
     {
         try
         {
-            var preco = txtPrecoUnitario.Text;                     
+            var preco = txtPrecoUnitario.Text;
         }
         catch (Exception ex)
         {

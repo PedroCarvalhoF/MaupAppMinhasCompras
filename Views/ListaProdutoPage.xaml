@@ -1,7 +1,16 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MinhasCompras.Views.ListaProdutoPage"
-             Title="Lista de Produtos">
+             Title="Produtos">
+
+    <NavigationPage.TitleView>
+        <Label Text="Lista do Pedro"
+               HorizontalOptions="Start"
+               VerticalOptions="Center"
+               FontAttributes="Bold"
+               TextColor="White"
+               FontSize="22" />
+    </NavigationPage.TitleView>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Somar"
@@ -11,92 +20,101 @@
                      Clicked="ToolbarItem_Clicked" />
     </ContentPage.ToolbarItems>
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="VerticalTextAlignment"
+                        Value="Center" />
+                <Setter Property="FontSize"
+                        Value="13" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <Grid Padding="10"
           RowSpacing="10"
           RowDefinitions="Auto,*">
 
-        <!-- Linha 0: SearchBar -->
         <SearchBar x:Name="txtConsultaProduto"
                    Placeholder="Informe nome do Produto"
                    TextChanged="txtConsultaProduto_TextChanged"
-                   Grid.Row="0" />
+                   Grid.Row="0"
+                   BackgroundColor="#f0f0f0"
+                   Margin="0,0,0,10" />
 
-        <!-- Linha 1: ListView preenchendo o restante da tela -->
-        <ListView x:Name="ListViewProdutos" ItemSelected="ListViewProdutos_ItemSelected"
-                  Grid.Row="1"
-                  HasUnevenRows="True"
-                  SeparatorVisibility="None">
+        <Frame Grid.Row="1"
+               CornerRadius="12"
+               HasShadow="True"
+               BorderColor="#ccc"
+               Padding="0">
 
-            <ListView.Header>
-                <Frame Margin="0,5"
-                       Padding="10"
-                       BackgroundColor="#f9f9f9"
-                       CornerRadius="6"
-                       HasShadow="True">
-                    <Grid ColumnDefinitions="*,2*,*,*,*,*"
-                          Padding="5">
+            <CollectionView x:Name="ListViewProdutos"
+                            SelectionMode="Single"
+                            SelectionChanged="ListViewProdutos_SelectionChanged">
+
+                <CollectionView.Header>
+                    <Grid ColumnDefinitions="*,2*,*,*,*"
+                          Padding="5"
+                          BackgroundColor="#f2f2f2">
                         <Label Grid.Column="0"
                                Text="ID"
-                               HorizontalTextAlignment="Start" />
+                               FontAttributes="Bold" />
                         <Label Grid.Column="1"
                                Text="Descrição"
-                               HorizontalTextAlignment="Start" />
+                               FontAttributes="Bold" />
                         <Label Grid.Column="2"
                                Text="QTD"
+                               FontAttributes="Bold"
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="3"
                                Text="Preco"
+                               FontAttributes="Bold"
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="4"
                                Text="Total"
+                               FontAttributes="Bold"
                                HorizontalTextAlignment="Center" />
                     </Grid>
-                </Frame>
-            </ListView.Header>
+                </CollectionView.Header>
 
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <ViewCell.ContextActions>
-                            <MenuItem Text="Remover"
-                                      x:Name="mnRemoverItem"
-                                      Clicked="mnRemoverItem_Clicked" />
-                        </ViewCell.ContextActions>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Remover"
+                                               BackgroundColor="Red"
+                                               Invoked="mnRemoverItem_Clicked" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
 
-                        <Frame Margin="0,5"
-                               Padding="10"
-                               BackgroundColor="#f9f9f9"
-                               CornerRadius="6"
-                               HasShadow="True">
-                            <Grid ColumnDefinitions="*,2*,*,*,*,*,*">
-                                <Label Grid.Column="0"
-                                       Text="{Binding Id}"
-                                       HorizontalTextAlignment="Start"
-                                       VerticalTextAlignment="Center" />
-                                <Label Grid.Column="1"
-                                       Text="{Binding Descricao}"
-                                       HorizontalTextAlignment="Start"
-                                       VerticalTextAlignment="Center" />
-                                <Label Grid.Column="2"
-                                       Text="{Binding Quantidade}"
-                                       HorizontalTextAlignment="Center"
-                                       VerticalTextAlignment="Center" />
-                                <Label Grid.Column="3"
-                                       Text="{Binding Preco}"
-                                       HorizontalTextAlignment="Center"
-                                       VerticalTextAlignment="Center" />
-                                <Label Grid.Column="4"
-                                       Text="{Binding Total}"
-                                       HorizontalTextAlignment="Center"
-                                       VerticalTextAlignment="Center" />
-                            </Grid>
-                        </Frame>
+                            <Frame CornerRadius="8"
+                                   Margin="5,5,5,5"
+                                   Padding="8"
+                                   HasShadow="True"
+                                   BackgroundColor="White">
 
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
+                                <Grid ColumnDefinitions="*,2*,*,*,*">
+                                    <Label Grid.Column="0"
+                                           Text="{Binding Id}" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Descricao}" />
+                                    <Label Grid.Column="2"
+                                           Text="{Binding Quantidade}"
+                                           HorizontalTextAlignment="Center" />
+                                    <Label Grid.Column="3"
+                                           Text="{Binding Preco, StringFormat='{}{0:c}'}"
+                                           HorizontalTextAlignment="Center" />
+                                    <Label Grid.Column="4"
+                                           Text="{Binding Total, StringFormat='{}{0:c}'}"
+                                           HorizontalTextAlignment="Center" />
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
 
-        </ListView>
-
+            </CollectionView>
+        </Frame>
     </Grid>
 </ContentPage>

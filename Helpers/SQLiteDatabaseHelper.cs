@@ -45,4 +45,10 @@ public class SQLiteDatabaseHelper
         return _conn.QueryAsync<ProdutoDto>(sql, "%" + search + "%");
     }
 
+
+    public async Task<bool> DeleteFrom()
+    {
+        string sql = "DELETE FROM ProdutoDto";
+        return await _conn.ExecuteAsync(sql) > 0;
+    }
 }
